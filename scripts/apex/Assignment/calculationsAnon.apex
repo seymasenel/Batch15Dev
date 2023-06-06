@@ -1,0 +1,11 @@
+NewCar mustang = new NewCar();
+mustang.startCar('GT', 'Mustang');
+mustang.accelerate(80);
+mustang.checkSpeed();
+mustang.brake(55);
+mustang.checkSpeed();
+mustang.accelerate(10);
+mustang.checkSpeed();
+mustang.brake(40);
+mustang.checkSpeed();
+mustang.stopCar();

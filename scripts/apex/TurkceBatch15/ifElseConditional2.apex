@@ -1,0 +1,11 @@
+IfElseConditional2 if1 = new IfElseConditional2();
+string msg = if1.phone('2120444445');
+system.debug(msg);
+string msg1 = if1.phone('2160444445');
+system.debug(msg1);
+string msg2 = if1.phone('6120444444');
+system.debug(msg2);
+string msg3 = if1.phone('acg044444');
+system.debug(msg3);
+string msg4 = if1.phone('21044444');
+system.debug(msg4);
