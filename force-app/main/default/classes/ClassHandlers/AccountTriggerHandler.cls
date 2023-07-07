@@ -1,4 +1,5 @@
-public  class AccountTriggerHandler {
+public class AccountTriggerHandler {
+
     public static void updateAccDescription(List<account> accTriggerNew, List<Account> accTriggerOld, 
                                         Map<id, account> accTriggerNewMap, Map<id, account> accTriggerOldMap){
         //go through each record
@@ -47,18 +48,21 @@ public  class AccountTriggerHandler {
                         //set VIP field same as its account's VIP field
             
             if(!accIds.isEmpty()){
-                list<contact> listContacts = [select id, name, vip__c, accountid from contact where accountid in :accIds];
+                //GET all contacts of all those account where VIP is changed, and set the NEW VIP value
+                list<contact> listContacts = [select id, name, vip__c, accountid from contact 
+                                where accountid in :accIds and leadSource != 'Partner Referral']; 
                 for (contact eachContact : listContacts) {
                     //eachContact.vip__c = account's vip field
                     //how to get this contact's account's VIP field 
                     boolean accVIP = accTriggerNewMap.get(eachContact.accountid).vip__c;
-                    eachContact.vip__c = accVIP;
+                    eachContact.vip__c = accVIP;//set contact's vip field same as account's vip field.
                 }
                 update listContacts;
             }   
     }
-    //just accepting trigger.old
-        // we dont need trigger.oldMap
+
+    //just accepting trigger.old.
+        //we don't need trigger.oldMap. 
     public static void validateDelete(List<account> accTriggerOld) {
         for (account oldAcc : accTriggerOld) {
             if (oldAcc.active__c == 'Yes') {
@@ -67,21 +71,24 @@ public  class AccountTriggerHandler {
         }
     }
 
-    public static void sendRestorantionEmaill(list<account> nListAcc){
-        list<messaging.SingleEmailMessage> listMessages = new list<messaging.SingleEmailMessage>();
-        for(account newAcc : nListAcc){
-           //prepare list of email addrs where we wanna sen email mes
-            list<string> emailddress = new list<string>();
-            emailddress.add(userinfo.getUserEmail());
-            //prepare one email messagee
-            Messaging.SingleEmailMessage msg = new Messaging.SingleEmailMessage();
-            //set email addrs list where  we want to send email
-            msg.setToAddresses(emailddress);
-            msg.setSubject('Account successfly restore: ' +  newAcc.name);
-            msg.setPlainTextBody('Hello conem istedigin oldu!!');
-            //add single email to list of emailss
+    public static void sendRestorationEmail(List<account> accTriggerNew) {
+        List<Messaging.SingleEmailMessage> listMessages = new List<Messaging.SingleEmailMessage>();
+        for (account newAcc : accTriggerNew) {
+
+            //prepare list of email address where we want to send email message
+            List<string> emailAddress = new list<string>();
+            emailAddress.add(UserInfo.getUserEmail());
+
+            //Prepare ONE email message.
+            Messaging.SingleEmailMessage msg = new messaging.SingleEmailMessage();
+            //set email address list where we want to send email
+            msg.setToAddresses(emailAddress);
+            msg.setSubject('Account successfully restored: ' + newAcc.name);
+            msg.setPlainTextBody('Hello Hello, account is restored successfully. ');
+            //add single email to LIST of emails
             listMessages.add(msg);
         }
         Messaging.sendEmail(listMessages);
     }
+
 }

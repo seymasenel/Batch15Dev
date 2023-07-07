@@ -29,3 +29,6 @@ system.enqueueJob(q15);
 System.enqueueJob(new Queuable15first());
 
 System.enqueueJob(new Queuable15second());
+
+BatchApexMail b = new BatchApexMail();
+Database.executeBatch(b);

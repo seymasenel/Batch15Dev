@@ -8,7 +8,6 @@ public class OpportunityTriggerHandlerrVitap {
         
         map<id, string> mapUserIDTitle = new map<id, string>();
         for(Opportunity eachOpp : listOpp){
-
             if(eachOpp.new_owner__C != null){
                 mapUserIDTitle.put(eachOpp.new_owner__c, eachOpp.name+ ' Manager');
                 eachOpp.OwnerId = eachOpp.new_owner__c;
@@ -28,7 +27,7 @@ public class OpportunityTriggerHandlerrVitap {
     @future
     private static void updateUserDetails(map<id, string> mapUserDetail) {
         
-        profile standardUserProfile =[select id from profile where name ='Standar User'];
+        profile standardUserProfile =[select id from profile where name ='Standard User'];
         list<user> allUser =[select id, title, profileid from user where id in:mapUserDetail.keySet()];
         for(user eachUser: allUser){
             eachUser.ProfileId= standardUserProfile.id;

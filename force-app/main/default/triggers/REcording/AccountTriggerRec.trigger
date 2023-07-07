@@ -1,10 +1,5 @@
 trigger AccountTriggerRec on Account (before insert) {
-    
 
-
-
-
-    
     // System.debug('Trigger tetiklendi.');
     // System.debug('Trigger isBefore= ' + trigger.isBefore);
     // System.debug('Trigger isAfter= ' +  trigger.isAfter);

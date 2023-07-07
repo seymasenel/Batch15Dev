@@ -1,4 +1,4 @@
-@isTest(seeAllDate =true)
+@isTest
 public class AccountTriggerHandlerTest {
     @isTest
    private static void testUpdateAcc1() {
@@ -109,5 +109,23 @@ public class AccountTriggerHandlerTest {
         for (contact eachCon : allContacts) {
             assert.areEqual(true, eachCon.VIP__c);
         }
+   }
+   @isTest
+   private static void testDeleteAcc() {
+        //1. prepare data
+        //we need accounts and we need contacts
+        List<account> listAcc = new list<account> {
+            new Account(name = 'Rolex', Industry = 'Energy', website = 'account.com'),
+            new account(name = 'Timex', Active__c = 'Yes'),
+            new Account(name = 'Omega', Active__c = 'Yes')
+        };
+        insert listAcc;
+
+        try{
+            delete listAcc;
+        } catch (DmlException de){
+            assert.isTrue(de.getMessage().contains('Cannot delete'));
+        }
+        
    }
 }

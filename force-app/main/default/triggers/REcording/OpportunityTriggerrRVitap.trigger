@@ -5,8 +5,7 @@ trigger OpportunityTriggerrRVitap on Opportunity (after update) {
         //map<id, Opportunity> oppNewMap = trigger.newMap;
         OpportunityTriggerHandlerrVitap.updateOwner(trigger.newMap.keySet());
         System.debug('Called future method Done already..');
-    }
-    
+    }   
     
     IF(TRIGGER.isAfter && trigger.isUpdate){
         OpportunityTriggerHandlerrVitap.validateOppClosed(trigger.new, trigger.old, trigger.newMap, trigger.oldMap);

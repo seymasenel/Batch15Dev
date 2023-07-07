@@ -1,17 +1,29 @@
 public class SalesforceProjectHandler {
 
     public static void createDefaultTicket(List<salesforce_project__c> spTriggerNew) {
-        //create list<st>
+        try{
+            //create list<st>
+
+            //get custom setting Org deafult value
+            DefaultTicketInfo__c dt = DefaultTicketInfo__c.getOrgDefaults();
         list<Salesforce_Ticket__c> listST = new List<Salesforce_Ticket__c>();
         for (Salesforce_Project__c newSP : spTriggerNew) {
             Salesforce_Ticket__c st = new Salesforce_Ticket__c();
-            st.Subject__c = 'Default ST';
+            // Subject and Desc. field should be added dynamically from custom setting
+            st.Subject__c = dt.Subject__c;
+            st.Description__c=dt.description__c;
+            st.Priority__c='High';
             st.Salesforce_Project__c = newSP.Id; //relationship field
             listST.add(st);
         }
         if (!listST.isEmpty()) {
             insert listST;
         }
+        }catch(Exception ex){
+            for (Salesforce_Project__c newSP : spTriggerNew){
+                newSP.addError('Default Ticket creation failed. Contact Your administrator, NOt developer');
+            }
+        }                     
     }
 
     public static void validate1(List<salesforce_project__c> spTriggerNew, List<salesforce_project__c> spTriggerOld, Map<id, Salesforce_Project__c> spTriggerNewMap,Map<id, Salesforce_Project__c> spTriggerOldMap ) {
